@@ -4,7 +4,7 @@
 package com.example.schmolify.generated.jooq;
 
 
-import com.example.schmolify.generated.jooq.tables.Link;
+import com.example.schmolify.generated.jooq.tables.Schmol;
 
 
 /**
@@ -14,7 +14,7 @@ import com.example.schmolify.generated.jooq.tables.Link;
 public class Tables {
 
     /**
-     * The table <code>schmolify.link</code>.
+     * The table <code>schmolify.schmol</code>.
      */
-    public static final Link LINK = Link.LINK;
+    public static final Schmol SCHMOL = Schmol.SCHMOL;
 }

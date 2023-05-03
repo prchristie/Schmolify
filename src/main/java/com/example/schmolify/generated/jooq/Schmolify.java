@@ -4,7 +4,7 @@
 package com.example.schmolify.generated.jooq;
 
 
-import com.example.schmolify.generated.jooq.tables.Link;
+import com.example.schmolify.generated.jooq.tables.Schmol;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,9 +28,9 @@ public class Schmolify extends SchemaImpl {
     public static final Schmolify SCHMOLIFY = new Schmolify();
 
     /**
-     * The table <code>schmolify.link</code>.
+     * The table <code>schmolify.schmol</code>.
      */
-    public final Link LINK = Link.LINK;
+    public final Schmol SCHMOL = Schmol.SCHMOL;
 
     /**
      * No further instances allowed
@@ -48,7 +48,7 @@ public class Schmolify extends SchemaImpl {
     @Override
     public final List<Table<?>> getTables() {
         return Arrays.asList(
-            Link.LINK
+            Schmol.SCHMOL
         );
     }
 }

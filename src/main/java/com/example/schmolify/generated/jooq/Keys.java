@@ -4,8 +4,8 @@
 package com.example.schmolify.generated.jooq;
 
 
-import com.example.schmolify.generated.jooq.tables.Link;
-import com.example.schmolify.generated.jooq.tables.records.LinkRecord;
+import com.example.schmolify.generated.jooq.tables.Schmol;
+import com.example.schmolify.generated.jooq.tables.records.SchmolRecord;
 
 import org.jooq.TableField;
 import org.jooq.UniqueKey;
@@ -24,5 +24,5 @@ public class Keys {
     // UNIQUE and PRIMARY KEY definitions
     // -------------------------------------------------------------------------
 
-    public static final UniqueKey<LinkRecord> KEY_LINK_PRIMARY = Internal.createUniqueKey(Link.LINK, DSL.name("KEY_link_PRIMARY"), new TableField[] { Link.LINK.ID }, true);
+    public static final UniqueKey<SchmolRecord> KEY_SCHMOL_PRIMARY = Internal.createUniqueKey(Schmol.SCHMOL, DSL.name("KEY_schmol_PRIMARY"), new TableField[] { Schmol.SCHMOL.ID }, true);
 }
