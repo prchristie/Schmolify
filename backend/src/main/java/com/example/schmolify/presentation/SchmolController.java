@@ -23,6 +23,7 @@ record CreateSchmolResponse(SchmolDTO schmol) {
 record GetSchmolResponse(SchmolDTO schmol) {
 }
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api/v1/schmol")
 public class SchmolController {
