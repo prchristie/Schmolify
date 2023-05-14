@@ -8,7 +8,7 @@ export type Schmol = {
 };
 
 const get = async (id: string | undefined): Promise<Schmol> => {
-    const res = await fetch(`${baseUrl}/${id}`);
+  const res = await fetch(`${baseUrl}/${id}`);
   return (await res.json()).schmol as Schmol;
 };
 
@@ -17,4 +17,15 @@ const create = async (url: string): Promise<Schmol> => {
   return res.data.schmol as Schmol;
 };
 
-export default { get, create };
+const getAll = async (): Promise<Schmol[]> => {
+  const res = await axios.get(baseUrl);
+  console.log(res.data);
+
+  return res.data as Schmol[]
+}
+
+export const schmolIdToUrl= (id: string): string => {
+  return location.protocol + "//" + location.host + "/go/" + id
+}
+
+export default { get, create, getAll };

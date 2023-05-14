@@ -1,19 +1,27 @@
 import { Navbar } from "../components/Navbar";
 import { MouseEvent, SetStateAction, useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import {
+  hashQueryKey,
+  QueryKey,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
 
-import schmolService, { Schmol } from "../services/schmol";
+import schmolService, { Schmol, schmolIdToUrl } from "../services/schmol";
 import { CreateSchmolCard as CreateSchmolForm } from "../components/CreateSchmolForm";
 
 export default function Home() {
-  const [createdSchmol, setCreatedSchmol] = useState<Schmol | null>(null);
   const createSchmolMutation = useMutation({
     mutationFn: schmolService.create,
   });
+  const queryClient = useQueryClient();
+  const getSchmols = useQuery(["schmols"], schmolService.getAll);
 
   const createNewSchmol = async (url: string) => {
-    const schmol = await createSchmolMutation.mutateAsync(url);
-    setCreatedSchmol(schmol);
+    await createSchmolMutation.mutateAsync(url, {
+      onSuccess: () => queryClient.invalidateQueries(["schmols"]),
+    });
   };
 
   return (
@@ -22,18 +30,22 @@ export default function Home() {
         <Navbar />
       </header>
       <main className="flex-1">
-        <div className="flex h-full items-center justify-center">
-          {createdSchmol == null && (
+        <div className="flex h-full items-center justify-around">
+          <div className="w-1/3">
             <CreateSchmolForm createSchmolCb={createNewSchmol} />
-          )}
-          {createdSchmol != null &&
-            `You created a schmol bitch. Go to ${
-              location.protocol +
-              "//" +
-              location.host +
-              "/go/" +
-              createdSchmol.id
-            }`}
+          </div>
+          <ul>
+            {getSchmols.data?.map((schmol) => (
+              <li
+                key={schmol.id}
+                onClick={() => {
+                  navigator.clipboard.writeText(schmolIdToUrl(schmol.id));
+                }}
+              >
+                {schmolIdToUrl(schmol.id)}: {schmol.url}
+              </li>
+            ))}
+          </ul>
         </div>
       </main>
     </div>
