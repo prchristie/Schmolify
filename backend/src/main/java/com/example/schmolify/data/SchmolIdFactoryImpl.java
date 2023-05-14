@@ -11,8 +11,8 @@ import java.util.UUID;
 @Component
 public class SchmolIdFactoryImpl implements SchmolIdFactory {
     @Override
-    public SchmolId idFromUrl(URL url) {
-        UUID result = UUID.nameUUIDFromBytes(url.toString().getBytes());
+    public SchmolId idFromUrl(String url) {
+        UUID result = UUID.nameUUIDFromBytes(url.getBytes());
         String id = FriendlyId.toFriendlyId(result);
         return SchmolId.create(id.substring(0, 8));
     }

@@ -3,14 +3,14 @@ package com.example.schmolify.domain;
 import java.net.URL;
 
 public class Schmol extends Entity<SchmolId> {
-    private final URL url;
+    private final String url;
 
-    public Schmol(SchmolId id, URL url) {
+    public Schmol(SchmolId id, String url) {
         this.id = id;
         this.url = url;
     }
 
-    public URL getUrl() {
+    public String getUrl() {
         return url;
     }
 }

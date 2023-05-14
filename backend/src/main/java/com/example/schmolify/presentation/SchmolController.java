@@ -1,17 +1,17 @@
 package com.example.schmolify.presentation;
 
-import com.example.schmolify.domain.Schmol;
 import com.example.schmolify.application.SchmolService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.schmolify.domain.Schmol;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.List;
 
-record SchmolDTO(String id, String url) {};
+record SchmolDTO(String id, String url) {
+}
 
 record CreateSchmolRequest(String url) {
 }
@@ -38,7 +38,7 @@ public class SchmolController {
     public ResponseEntity<CreateSchmolResponse> createSchmol(@RequestBody CreateSchmolRequest req) {
         Schmol schmol;
         try {
-            schmol = schmolService.createSchmol(new URL(req.url()));
+            schmol = schmolService.createSchmol(req.url());
         } catch (MalformedURLException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid URL");
         }
@@ -47,17 +47,25 @@ public class SchmolController {
     }
 
     private SchmolDTO schmolEntityToDTO(Schmol s) {
-        return new SchmolDTO(s.getId().value(), s.getUrl().toString());
+        return new SchmolDTO(s.getId().value(), s.getUrl());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<GetSchmolResponse> getSchmol(@PathVariable("id") String id) {
         var schmol = schmolService.getSchmol(id);
 
-        if(schmol == null) {
+        if (schmol == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Schmol not found");
         }
 
         return new ResponseEntity<>(new GetSchmolResponse(schmolEntityToDTO(schmol)), HttpStatus.OK);
+    }
+
+    @GetMapping("")
+    public ResponseEntity<List<SchmolDTO>> getAllSchmols() {
+        List<Schmol> schmols = schmolService.getAllSchmols();
+        List<SchmolDTO> schmolDTOs = schmols.stream().map(this::schmolEntityToDTO).toList();
+
+        return new ResponseEntity<>(schmolDTOs, HttpStatus.OK);
     }
 }

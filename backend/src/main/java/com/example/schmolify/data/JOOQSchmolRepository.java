@@ -8,8 +8,7 @@ import org.jooq.DSLContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import java.net.MalformedURLException;
-import java.net.URL;
+import java.util.List;
 
 import static com.example.schmolify.generated.jooq.tables.Schmol.SCHMOL;
 
@@ -22,7 +21,7 @@ public class JOOQSchmolRepository implements SchmolRepository {
     @Override
     public void add(Schmol schmol) {
         jooq.insertInto(SCHMOL, SCHMOL.ID, SCHMOL.URL)
-                .values(schmol.getId().getValue(), schmol.getUrl().toString())
+                .values(schmol.getId().getValue(), schmol.getUrl())
                 .onDuplicateKeyIgnore()
                 .execute();
     }
@@ -33,14 +32,16 @@ public class JOOQSchmolRepository implements SchmolRepository {
                 .where(SCHMOL.ID.eq(id.getValue()))
                 .fetchOne();
 
-        if(record == null) {
+        if (record == null) {
             return null;
         }
 
-        try {
-            return new Schmol(SchmolId.create(record.getId()), new URL(record.getUrl()));
-        } catch (MalformedURLException e) {
-            throw new RuntimeException(e);
-        }
+        return new Schmol(SchmolId.create(record.getId()), record.getUrl());
+    }
+
+    @Override
+    public List<Schmol> getAll() {
+        var schmols = jooq.selectFrom(SCHMOL).fetch();
+        return schmols.stream().map(s -> new Schmol(SchmolId.create(s.getId()), s.getUrl())).toList();
     }
 }
