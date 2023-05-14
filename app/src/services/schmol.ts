@@ -8,7 +8,7 @@ export type Schmol = {
 };
 
 const get = async (id: string | undefined): Promise<Schmol> => {
-  const res = await fetch(`${baseUrl}/${id}`);
+    const res = await fetch(`${baseUrl}/${id}`);
   return (await res.json()).schmol as Schmol;
 };
 
